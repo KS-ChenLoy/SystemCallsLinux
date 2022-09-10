@@ -1,0 +1,54 @@
+.TH Project 1
+.SH Name: Kemari Chen Loy
+.SH Course: Operating Systems
+.SH
+.SH Project 1
+System Calls \- Implement a system call through Reptilian
+.SH DESCRIPTION
+Modified files within the kernel. Had to edit three files within the reptilian-kernel directory to successfully call the system calls. Files modified:
+.PP
+ 1). usr/rep/src/reptilian-kernel/arch/x86/entry/syscalls
+.br
+   Then nano syscall_64.tbl. In this file I added three system calls at the end of the first list in the table.
+.PP
+.b
+ 2). After adding the system calls to syscall_64.tbl, I declared those calls in the syscalls.h file found at usr/rep/src/reptilian-kernel/include/linux
+.PP
+.b
+ 3). I then implemented the declared system calls in sys.c file found at usr/rep/src/reptilian-kernel/kernel. All system calls are implemented in the sys.c file. The most challenging function was the set log function. I had to figure out how get the root user id and compare it to the current user id. I used kuid_t which identifies process credentials within the kernel and thus, we can override log levels.
+.PP
+ I also declared a global variable within the sys.c file. The global variable is declared using the 'EXPORT_SYMBOL" function. This allows the variable to be accessed by files outside the kernel space and other files within the kernel space if needed.
+.PP
+.b
+After the files were updated within the kernel, I then created the files within user space. These files are:
+.PP
+ 1). process_log.h - this has all the neccessary declarations needed.
+.PP
+ 2). process_log.c - we implement all the decalred functions in this file.
+.PP
+.br
+Then created the executables for getlog, sendlog and setlog files. 
+.PP
+.SH Testing
+After all files were updated and created I ran sudo make && sudo make install && sudo make modules_install in usr/rep/src/reptilian-kernel. Then we restart the kernel.
+.PP 
+After restarting we test the "test" files given to us: harness_test and library_test. I also used dmesg to show the message logged within the kernel using using ./send_log then running dmesg.
+.SH Video
+https://www.youtube.com/watch?v=w-RatrjYaAQ
+.SH References
+These were used in the completion of this project:
+.PP
+ 
+https://www.includehelp.com/c/process-identification-pid_t-data-type.aspx
+.PP
+https://www.kernel.org/doc/html/latest/core-api/printk-basics.html
+.PP
+https://www.kernel.org/doc/html/v4.12/process/adding-syscalls.html#x86-system-call-implementation
+.PP
+https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/
+.PP
+https://stackoverflow.com/questions/27866395/in-kernel-program-get-root-user-id-and-compare-with-current-user-id
+.PP
+https://williamthegrey.wordpress.com/2014/05/18/add-your-own-system-calls-to-the-linux-kernel/
+
+
